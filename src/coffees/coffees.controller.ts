@@ -25,7 +25,7 @@ class CoffeesController {
   findALL(@Query() paginationQuery) {
     if (controllerOptions.flag) {
       return {
-        message: 'Use SQL Instead'
+        message: 'Use SQL Instead' // Test to prove dynamic controller implementation
       }
     }
     // const { limit, offset } = paginationQuery;
