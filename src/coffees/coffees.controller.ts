@@ -12,12 +12,22 @@ import {
 } from '@nestjs/common';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
+interface Options {
+  flag: boolean
+}
+
+export const createDynamicController = (controllerOptions: Options) => {
 @Controller('coffees')
-export class CoffeesController {
-    constructor(private coffeesService: CoffeesService) 
+class CoffeesController {
+    constructor(public coffeesService: CoffeesService) 
     {}
   @Get()
   findALL(@Query() paginationQuery) {
+    if (controllerOptions.flag) {
+      return {
+        message: 'Use SQL Instead'
+      }
+    }
     // const { limit, offset } = paginationQuery;
     return this.coffeesService.findAll();
   }
@@ -28,12 +38,12 @@ export class CoffeesController {
   }
 
   @Post()
-  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+  create(@Body() createCoffeeDto: Partial<CreateCoffeeDto>) {
     return this.coffeesService.create(createCoffeeDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+  update(@Param('id') id: string, @Body() updateCoffeeDto: Partial<UpdateCoffeeDto>) {
     return this.coffeesService.update(id, updateCoffeeDto);
   }
 
@@ -41,4 +51,7 @@ export class CoffeesController {
   remove(@Param('id') id: string) {
     return this.coffeesService.remove(id);
   }
+}
+
+  return CoffeesController
 }

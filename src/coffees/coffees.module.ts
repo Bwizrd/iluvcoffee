@@ -1,9 +1,18 @@
+import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
-import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
+import { Coffee, CoffeeSchema } from './entities/coffee.entity';
+import { createDynamicController } from './coffees.controller';
 
 @Module({ 
-  controllers: [CoffeesController],
+  imports: [MongooseModule.forFeature([{ 
+    name: Coffee.name, 
+    schema: CoffeeSchema 
+  }])],
+  controllers: [createDynamicController({
+    flag: false,
+   })
+  ],
   providers: [CoffeesService] 
 })
 export class CoffeesModule {}

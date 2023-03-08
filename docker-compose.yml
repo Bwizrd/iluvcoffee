@@ -1,18 +1,16 @@
-version: '3.3'
-services:
-  postgredb:
-    container_name: postgredb
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: example
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    expose:
-      - 5432
+version: "3"
 
-networks:
-  default:
-    name: postgre-service_default
+services:
+  db:
+    image: mongo # container image to be used
+    restart: always 
+    ports: # expose ports in “host:container” format
+      - 27017:27017
+    environment: #env variables to pass into the container
+       MONGODB_DATABASE: nest-course
+
+# // Starting containers (in detached/background mode)
+# docker-compose up -d
+
+# // Taking containers down
+# docker-compose down
